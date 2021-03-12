@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
     // Try to read 64 bytes.
     nobytes = fread(B.bytes, 1, 64, f);
     // Tell the command line how many we read.
-    printf("Read %d bytes.\n", nobytes);
+    printf("Read %ld bytes.\n", nobytes);
     // Update number of bits read.
     nobits = nobits + (8 * nobytes);
     // Print the 16 32-bit words.
@@ -44,7 +44,7 @@ int main(int argc, char *argv[]) {
     while (!feof(f)) {
         // Same here.
         nobytes = fread(&B.bytes, 1, 64, f);
-        printf("Read %d bytes.\n", nobytes);
+        printf("Read %ld bytes.\n", nobytes);
         nobits = nobits + (8 * nobytes);
         // Print the 16 32-bit words.
         for (i = 0; i < 16; i++) {
@@ -56,7 +56,7 @@ int main(int argc, char *argv[]) {
     // Close the file.
     fclose(f);
     // Print total number of bits read.
-    printf("Total bits read: %d.\n", nobits);
+    printf("Total bits read: %ld.\n", nobits);
 
     return 0;
 }
