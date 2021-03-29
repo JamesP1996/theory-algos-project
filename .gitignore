@@ -3,6 +3,7 @@ bit-operations
 funcs
 preproc
 emptyexec
+sha256
 
 # Test File
 test.txt
