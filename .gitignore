@@ -4,6 +4,7 @@ funcs
 preproc
 emptyexec
 sha256
+sha512
 
 # Test File
 test.txt
