@@ -34,7 +34,7 @@ union Block
     // 32 x 32 = 1024 - dealing with block as words.
     WORD words[32];
     // 64 x 8 = 1024 - dealing with the last 64 bits of last block.
-    __uint128_t onetwentyeight[8];
+    __uint128_t onetwentyeight[8]; 
 };
 
 // Tracking the Status of where we are within the Input/Message Padding.
@@ -93,7 +93,7 @@ int next_block(FILE *f, union Block *M, enum Status *S, uint64_t *nobits) {
                 M->bytes[nobytes] = 0x00; // In bits: 00000000
             }
             // Append nobits as a big endian integer.
-            M->onetwentyeight[7] = (islilend() ? bswap_128(*nobits) : *nobits);
+            M->onetwentyeight[7] = (islilend() ? bswap_64(*nobits) : *nobits);
             // Say this is the last block.
             *S = END;
         } else {
@@ -126,6 +126,87 @@ int next_block(FILE *f, union Block *M, enum Status *S, uint64_t *nobits) {
             M->words[i] = bswap_32(M->words[i]);
 
     return 1;
+}
+
+int next_hash(union Block *M, WORD H[]) {
+  
+    // Message schedule, Section 6.2.2
+    WORD W[80];
+    // Iterator.
+    int t;
+    // Temporary variables.
+    WORD a, b, c, d, e, f, g, h, T1, T2;
+
+    // Section 6.2.2, part 1.
+    for (t = 0; t < 16; t++)
+        W[t] = M->words[t];
+    for (t = 16; t < 79; t++)
+        W[t] = Sig1(W[t-2]) + W[t-7] + Sig0(W[t-15]) + W[t-16];
+
+    // Section 6.2.2, part 2.
+    a = H[0]; b = H[1]; c = H[2]; d = H[3];
+    e = H[4]; f = H[5]; g = H[6]; h = H[7];
+
+    // Section 6.2.2, part 3.
+    for (t = 0; t < 79; t++) {
+        T1 = h + SIG1(e) + CH(e, f, g) + K[t] + W[t];
+        T2 = SIG0(a) + MAJ(a, b, c);
+        h = g; g = f; f = e; e = d + T1; d = c; c = b; b = a; a = T1 + T2;
+    }
+
+    // Section 6.2.2, part 4.
+    H[0] = a + H[0]; H[1] = b + H[1]; H[2] = c + H[2]; H[3] = d + H[3];
+    H[4] = e + H[4]; H[5] = f + H[5]; H[6] = g + H[6]; H[7] = h + H[7];
+
+    return 0;
+}
+
+int sha512(FILE *f, WORD H[]) {
+    // The function that performs/orchestrates the SHA512 algorithm on
+    // message f.
+
+    // The current block.
+    union Block M;
+
+    // Total number of bits read.
+    uint64_t nobits = 0;
+
+    // Current status of reading input.
+    enum Status S = READ;
+
+    // Loop through the (preprocessed) blocks.
+    while (next_block(f, &M, &S, &nobits)) {
+        next_hash(&M, H);
+    }
+
+    return 0;
+}
+
+
+int main(int argc, char *argv[]) {
+    // Section 5.3.4
+    WORD H[] = {
+        0x22312194FC2BF72C, 0x9F555FA3C84C64C2, 0x2393B86B6F53B151, 0x963877195940EABD,
+        0x96283EE2A88EFFE3, 0xBE5E1E2553863992, 0x2B0199FC2C85B8AA, 0x0EB72DDC81C52CA2
+    };
+
+    // File pointer for reading.
+    FILE *f;
+    // Open file from command line for reading.
+    f = fopen(argv[1], "r");
+
+    // Calculate the SHA512 of f.
+    sha512(f, H);
+
+    // Print the final SHA512 hash.
+    for (int i = 0; i < 8; i++)
+        printf("%08" PF, H[i]);
+    printf("\n");
+
+    // Close the file.
+    fclose(f);
+
+    return 0;
 }
 
 
