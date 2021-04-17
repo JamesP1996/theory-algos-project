@@ -34,7 +34,7 @@ union Block
     // 32 x 32 = 1024 - dealing with block as words.
     WORD words[32];
     // 64 x 8 = 1024 - dealing with the last 64 bits of last block.
-    __uint128_t onetwentyeight[8]; 
+    __uint128_t onetwentyeight[16]; 
 };
 
 // Tracking the Status of where we are within the Input/Message Padding.
@@ -77,7 +77,7 @@ int next_block(FILE *f, union Block *M, enum Status *S, uint64_t *nobits) {
         return 0;
     } else if (*S == READ) {
         // Try to read 64 bytes from the input file.
-        nobytes = fread(M->bytes, 1, 128, f);
+        nobytes = fread(M->bytes, 1, 80, f);
         // Calculate the total bits read so far.
         *nobits = *nobits + (8 * nobytes);
         // Enough room for padding.
@@ -93,7 +93,7 @@ int next_block(FILE *f, union Block *M, enum Status *S, uint64_t *nobits) {
                 M->bytes[nobytes] = 0x00; // In bits: 00000000
             }
             // Append nobits as a big endian integer.
-            M->onetwentyeight[7] = (islilend() ? bswap_64(*nobits) : *nobits);
+            M->onetwentyeight[15] = (islilend() ? bswap_64(*nobits) : *nobits);
             // Say this is the last block.
             *S = END;
         } else {
@@ -115,7 +115,7 @@ int next_block(FILE *f, union Block *M, enum Status *S, uint64_t *nobits) {
             M->bytes[nobytes] = 0x00; // In bits: 00000000
         }
         // Append nobits as a big endian integer.
-        M->onetwentyeight[7] = (islilend() ? bswap_64(*nobits) : *nobits);
+        M->onetwentyeight[15] = (islilend() ? bswap_64(*nobits) : *nobits);
         // Change the status to END.
         *S = END;
     }
@@ -123,7 +123,7 @@ int next_block(FILE *f, union Block *M, enum Status *S, uint64_t *nobits) {
     // Swap the byte order of the words if we're little endian.
     if (islilend())
         for (int i = 0; i < 16; i++)
-            M->words[i] = bswap_32(M->words[i]);
+            M->words[i] = bswap_64(M->words[i]);
 
     return 1;
 }
@@ -186,8 +186,8 @@ int sha512(FILE *f, WORD H[]) {
 int main(int argc, char *argv[]) {
     // Section 5.3.4
     WORD H[] = {
-        0x22312194FC2BF72C, 0x9F555FA3C84C64C2, 0x2393B86B6F53B151, 0x963877195940EABD,
-        0x96283EE2A88EFFE3, 0xBE5E1E2553863992, 0x2B0199FC2C85B8AA, 0x0EB72DDC81C52CA2
+        0x6a09e667f3bcc908, 0xbb67ae8584caa73b, 0x3c6ef372fe94f82b, 0xa54ff53a5f1d36f1,
+        0x510e527fade682d1, 0x9b05688c2b3e6c1f, 0x1f83d9abfb41bd6b, 0x5be0cd19137e2179
     };
 
     // File pointer for reading.
@@ -200,7 +200,7 @@ int main(int argc, char *argv[]) {
 
     // Print the final SHA512 hash.
     for (int i = 0; i < 8; i++)
-        printf("%08" PF, H[i]);
+        printf("%016" PF, H[i]);
     printf("\n");
 
     // Close the file.
