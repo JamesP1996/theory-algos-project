@@ -34,7 +34,7 @@ union Block
     // 32 x 32 = 1024 - dealing with block as words.
     WORD words[32];
     // 64 x 8 = 1024 - dealing with the last 64 bits of last block.
-    __uint128_t onetwentyeight[16]; 
+    __uint64_t onetwentyeight[16]; 
 };
 
 // Tracking the Status of where we are within the Input/Message Padding.
@@ -77,7 +77,7 @@ int next_block(FILE *f, union Block *M, enum Status *S, uint64_t *nobits) {
         return 0;
     } else if (*S == READ) {
         // Try to read 64 bytes from the input file.
-        nobytes = fread(M->bytes, 1, 80, f);
+        nobytes = fread(M->bytes, 1, 64, f);
         // Calculate the total bits read so far.
         *nobits = *nobits + (8 * nobytes);
         // Enough room for padding.
@@ -140,7 +140,7 @@ int next_hash(union Block *M, WORD H[]) {
     // Section 6.2.2, part 1.
     for (t = 0; t < 16; t++)
         W[t] = M->words[t];
-    for (t = 16; t < 79; t++)
+    for (t = 16; t < 80; t++)
         W[t] = Sig1(W[t-2]) + W[t-7] + Sig0(W[t-15]) + W[t-16];
 
     // Section 6.2.2, part 2.
@@ -148,7 +148,7 @@ int next_hash(union Block *M, WORD H[]) {
     e = H[4]; f = H[5]; g = H[6]; h = H[7];
 
     // Section 6.2.2, part 3.
-    for (t = 0; t < 79; t++) {
+    for (t = 0; t < 80; t++) {
         T1 = h + SIG1(e) + CH(e, f, g) + K[t] + W[t];
         T2 = SIG0(a) + MAJ(a, b, c);
         h = g; g = f; f = e; e = d + T1; d = c; c = b; b = a; a = T1 + T2;
