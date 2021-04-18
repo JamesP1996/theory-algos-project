@@ -29,5 +29,11 @@ Inside the <i>LabWork</i> folder there are files that run SHA-256 which were com
 3. The Application should continue to print out the sha512sum and this applications output and compare them against eachother using both the empty.txt file and the abc.txt file. You may change these files if you know what you are doing and test different SHA-512 inputs, to ensure that the code is satisfactory and prints the correct values.
 
 
-## The Purpose of the SHA-512 Algorithm 
+## SHA-512 Algorithm and it's Purpose
+
+ The SHA-512 algorithm belongs to a family of other Secure Hash Standerds such as  SHA, SHA-1, SHA-2 and its own major category SHA-3. Each having it's own Block Size, Output Size and Internal State Sizes. SHA-512 being much more secure than the original SHA or algorithms in the SHA-0 or SHA-1 Categories as it's less influenced by Collision Based Attacks. The fall back on using SHA-512 is its time to calculate a single hash so for programs that require many hashes calculated at the same time such as a web server dealing with 1000's of passwords per minute, it may not always be the most efficent or another example may be bitcoin where they opted for a SHA256 for the blocks within crypto.
+
+ The purpose of these Secure Hash Algorithms in general is to generate digests of messages that are non reversible to ensure the integrity of a file since the digests were generated. Such as when you go to download a file online, you can compare the file you downloaded to the SHA Message Digest displayed on the webpage, using a local program and a character comparator. If the file you downloaded has a different hash to the original one displayed, it is highly likely the integrity of the file has been tampered with and would not be safe to run on your local machine as someone has probably infected it with a virus or intends to use it for mal practice such as stealing user information. SHA is not the only function family which deals in hashed message digests as there is also MD2 and MD5 but the decesion on which algorithm to use is mostly up to the developers usages and how often the hashing function will be called upon, which may require some expertise into Big-O Notation and Data Structures to ensure the most efficent algorithm is used while also being the most secure for the developers use case and computer hardware.
+
+
 
