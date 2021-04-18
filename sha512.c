@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <inttypes.h>
-
+#include <errno.h>
 // Endianess:
 //   https://developer.ibm.com/technologies/systems/articles/au-endianc/
 #include <byteswap.h>
@@ -11,6 +11,7 @@ const int _i = 1;
 #define WORD uint64_t
 #define PF PRIx64
 #define BYTE uint8_t
+extern int errno ;
 
 // Page 5 of the secure hash standard.
 #define ROTL(_x, _n) ((_x << _n) | (_x >> ((sizeof(_x) * 8) - _n)))
@@ -184,6 +185,9 @@ int sha512(FILE *f, WORD H[]) {
 
 
 int main(int argc, char *argv[]) {
+
+    printf("Welcome to the Sha-512 Parser, Type -1 at Input to exit");
+    int errnum;
     // Section 5.3.4
     WORD H[] = {
         0x6a09e667f3bcc908, 0xbb67ae8584caa73b, 0x3c6ef372fe94f82b, 0xa54ff53a5f1d36f1,
@@ -194,6 +198,13 @@ int main(int argc, char *argv[]) {
     FILE *f;
     // Open file from command line for reading.
     f = fopen(argv[1], "r");
+
+    if(f == NULL){
+      errnum = errno;
+      fprintf(stderr, "Value of errno: %d\n", errno);
+      perror("Error printed by perror");
+      fprintf(stderr, "Error opening file: %s\n", strerror( errnum ));
+    }
 
     // Calculate the SHA512 of f.
     sha512(f, H);
