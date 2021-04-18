@@ -185,8 +185,6 @@ int sha512(FILE *f, WORD H[]) {
 
 
 int main(int argc, char *argv[]) {
-
-    printf("Welcome to the Sha-512 Parser, Type -1 at Input to exit");
     int errnum;
     // Section 5.3.4
     WORD H[] = {
@@ -201,9 +199,8 @@ int main(int argc, char *argv[]) {
 
     if(f == NULL){
       errnum = errno;
-      fprintf(stderr, "Value of errno: %d\n", errno);
-      perror("Error printed by perror");
-      fprintf(stderr, "Error opening file: %s\n", strerror( errnum ));
+      fprintf(stderr, "ERROR NUM: %d\n", errno);
+      perror("WARNING: ");
     }
 
     // Calculate the SHA512 of f.
