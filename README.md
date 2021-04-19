@@ -1,7 +1,4 @@
 # SHA-512 C Program
-
-This Repo was a project made for my 4th Year in Software Development in the <b>Theory of Algorithms Module</b>.
-
 ## Description
 The purpose of the application is to take in a File from the command line as an argument and parse it into a SHA-512 Hash. The application is written in the C programming language and was developed upon a Debian based linux distribution (Ubuntu) such that the tests.sh file that is ran during the ```make test``` command will only work on these distrubutions that have GCC- Make Installed either through Build Essentials or another Sudo Command. The output of the code is similar to that of sha512Sum command that is built into many debian based linux distributions and this can be seen within the tests.sh which will test the program against it. Pass meaning sha512sum and this application have the same SHA-512 Output Message.
 
