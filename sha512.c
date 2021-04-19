@@ -34,7 +34,7 @@ union Block
     BYTE bytes[128];
     // 32 x 32 = 1024 - dealing with block as words.
     WORD words[32];
-    // 64 x 8 = 1024 - dealing with the last 64 bits of last block.
+    // 64 x 16 = 1024 - dealing with the last 64 bits of last block.
     __uint64_t onetwentyeight[16]; 
 };
 
@@ -46,7 +46,7 @@ enum Status
     END
 };
 
-// Section 4.2.2
+// Section 4.2.2 K-Input for SHA-512 Hash Function
 const WORD K[] = {
     0x428a2f98d728ae22, 0x7137449123ef65cd, 0xb5c0fbcfec4d3b2f, 0xe9b5dba58189dbbc, 0x3956c25bf348b538,
     0x59f111f1b605d019, 0x923f82a4af194f9b, 0xab1c5ed5da6d8118, 0xd807aa98a3030242, 0x12835b0145706fbe,
@@ -83,13 +83,13 @@ int next_block(FILE *f, union Block *M, enum Status *S, uint64_t *nobits) {
         *nobits = *nobits + (8 * nobytes);
         // Enough room for padding.
         if (nobytes == 128) {
-            // This happens when we can read 64 bytes from f.
+            // This happens when we can read 128 bytes from f.
             // Do nothing.
         } else if (nobytes < 112) {
             // This happens when we have enough roof for all the padding.
             // Append a 1 bit (and seven 0 bits to make a full byte).
             M->bytes[nobytes] = 0x80; // In bits: 10000000.
-            // Append enough 0 bits, leaving 64 at the end.
+            // Append enough 0 bits, leaving 112 at the end.
             for (nobytes++; nobytes < 112; nobytes++) {
                 M->bytes[nobytes] = 0x00; // In bits: 00000000
             }
@@ -203,7 +203,7 @@ int main(int argc, char *argv[]) {
       perror("WARNING: ");
     }
 
-    // Calculate the SHA512 of f.
+    // Calculate the SHA512 of the file using the Hex Strings Defined Above.
     sha512(f, H);
 
     // Print the final SHA512 hash.
