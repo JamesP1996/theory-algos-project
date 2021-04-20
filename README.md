@@ -68,7 +68,7 @@ Next we need to consider a major key part in the hashing algorithm, in that a re
     Input "0011":
     
     Output: 0eedcf6ff77f791c328f6f76fc36b9506233c224f1ba542fe7c8ed52473ae6a347ccb9ba7623dbc7281b6cb4e5cbd3784d5686aa6c6caab728c9642ff3e416a2
-    
+
 As you can see from the above, even by changing one 0 to a 1. The output has completely changed thus you cannot reverse a Secure Hash Algorithms output one sequence at a time, you need try millions of full inputs before you will recieve the original message value as no less than the original input will do.
 
 The hashing algorithms also use non linear operations, such that you could not reverse a input using linear algebra techniques thus even the example at the beggining of this section is not even fully relevant to the complexity of the operations performed within the hashing algorithm as it uses many combinations of non linear and linear operations to compute it's output.
@@ -85,5 +85,8 @@ So if given a working quantum pc as stated above, it would be very possible to c
 
 In terms of SHA-1, it has already been done through multiple methods and the idea of having a hashed output be the same with different inputs parallels with the idea of Collision Attacks and Collision within hashing in general. As users have had tried to brute force a SHA message to find its original inputs and even found algorithms to perform this successfuly such as cracking SHA-1 by using a [chosen-prefix collision](https://www.usenix.org/system/files/sec20-leurent.pdf) for it.
 
+---
+## 3. How difficult is it to find a hash digest beginning with at least twelve zeros?
+---
 
-
+Considering that a hash digest is usually made up of Hexadecimal values, each string in the digest can range from anywhere between 0 and 15 (F in Hex). So you would have a 1/15^12 chance before we even consider the complexity of these algorithms and their non linearity as discussed above. A user would have a more likely hood to win their national lottery 10 times over than they would finding a hash digest to begin with 12 0's by inputting some file or text. This issue is also the prime difficulty within the Bit Coin Mining industry currently. The hash of a block within bitcoin needs to start with a certain number of zero values but the probability of calculating such a hash is very low therefore numerous attempts are made by thousands of users machines across the planet to generate new hashes and attempt to increment the nonce value such that they eventually can reach a valid hash and move onto the next major block. The issue with bitcoin mining is that as their target requires more nonce values or is "lower" the more exponentially difficult the task becomes and this is only the cracking of a SHA-256 algorithm not like the SHA-512 based algorithm built in this application. The current objective of bitcoin is to find the input for a 17 nonce value hash string but it has taken bitcoin over 10 years to get to this point with thousands of machines running day and generating millions of hashes to get this far. So the likely hood of you inputting something into a Secure Hash Algorithm and recieving back a Hash Digest with 12 leading 0's is impossibly possible as the chance of it happening is so low it might as well be impossible.
