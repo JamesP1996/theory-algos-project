@@ -68,12 +68,22 @@ Next we need to consider a major key part in the hashing algorithm, in that a re
     Input "0011":
     
     Output: 0eedcf6ff77f791c328f6f76fc36b9506233c224f1ba542fe7c8ed52473ae6a347ccb9ba7623dbc7281b6cb4e5cbd3784d5686aa6c6caab728c9642ff3e416a2
+    
 As you can see from the above, even by changing one 0 to a 1. The output has completely changed thus you cannot reverse a Secure Hash Algorithms output one sequence at a time, you need try millions of full inputs before you will recieve the original message value as no less than the original input will do.
 
 The hashing algorithms also use non linear operations, such that you could not reverse a input using linear algebra techniques thus even the example at the beggining of this section is not even fully relevant to the complexity of the operations performed within the hashing algorithm as it uses many combinations of non linear and linear operations to compute it's output.
 
 ---
 ## 2. Can you design an algorithm that, given enough time, will find input messages that give each of the possible 512-bit strings?
+---
+Yes it would be possible to design a algorithm that does this, infact it is very similar to the algorithms behind Bitcoin Mining where pools of machines try to mine bitcoins by dealing with SHA-256 hashing, although it takes these pools of machines a long time to mine even a single coin which is equivilent to a very small amount of progress. So any single users machine would not be enough to find all the possible inputs for a particular hashed output within the machine or users lifetime unless we progress to the realm of quantum computing which can perform the tasks in computing we have in our time with multitude of times improved efficency. According to a post by Nella Ludlow on Forbes.com, in her words she stated that 
+
+*"If usable quantum computing were accessible, the field of cryptography would dramatically change, encryption codes could be broken quickly and perhaps crushing Blockchain technology."*
+
+This could be perhaps very true as a Quantum Machine does not work on the simple binary system that we have today, but on the idea of Qubits which has the ability of being both a 1 and a 0 at the same time for multiple iterations per Qubit. As of last year IBM promised a [1000 Qubit PC](https://www.sciencemag.org/news/2020/09/ibm-promises-1000-qubit-quantum-computer-milestone-2023) this would mean the pc could consecutively be 1000s of 1 and 0's at the same time and perform operations in a concurrent way and speed that pc's of today would never catch up with even in large pools like they are within bitcoin mining. 
+So if given a working quantum pc as stated above, it would be very possible to crack the different inputs required to create the same hash digest outputs within a person's lifetime for multiple types of SHA Hash Function but as of right now quantum computers are neither widely available or fully developed so based on current hardware, no single consumer based pc would be able to crack a SHA-2, or SHA-3 category Digest within a person’s life time.
+
+In terms of SHA-1, it has already been done through multiple methods and the idea of having a hashed output be the same with different inputs parallels with the idea of Collision Attacks and Collision within hashing in general. As users have had tried to brute force a SHA message to find its original inputs and even found algorithms to perform this successfuly such as cracking SHA-1 by using a [chosen-prefix collision](https://www.usenix.org/system/files/sec20-leurent.pdf) for it.
 
 
 
