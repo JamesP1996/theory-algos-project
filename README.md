@@ -1,6 +1,6 @@
 # SHA-512 C Program
 ## Description
-The purpose of the application is to take in a File from the command line as an argument and parse it into a SHA-512 Hash. The application is written in the C programming language and was developed upon a Debian based linux distribution (Ubuntu) such that the tests.sh file that is ran during the ```make test``` command will only work on these distrubutions that have GCC- Make Installed either through Build Essentials or another Sudo Command. The output of the code is similar to that of sha512Sum command that is built into many debian based linux distributions and this can be seen within the tests.sh which will test the program against it. Pass meaning sha512sum and this application have the same SHA-512 Output Message.
+The purpose of the application is to take in a File from the command line as an argument and parse it into a SHA-512 Hash. The application is written in the C programming language and was developed upon a Debian based linux distribution (Ubuntu) such that the tests.sh file that is ran during the ```make test``` command will only work on these distrubutions that have GCC/Clangd with Make Installed either through the Build Essential package or another Sudo apt-get Command. The output of the code is similar to that of sha512Sum command that is built into many debian based linux distributions and this can be seen within the tests.sh shell script file which will test the program against the sha512sum command.A Pass meaning sha512sum and this application have the same SHA-512 Digest Output Message.
 
 The guidelines used when creating this application was the Secure Hash Standard publication located on Nist (https://www.nist.gov/publications/secure-hash-standard), as this publication is well written and conside and seems to be a common standard when developers wish to create their own Secure Hash Algorithm Functions within an application and is universal among most Programming Languages as long as you know the language itself and can deciphyer the symbols within the publication.
 
@@ -15,7 +15,7 @@ Inside the <i>LabWork</i> folder there are files that run SHA-256 which were com
 | Syntax | Description |
 | ----------- | ----------- |
 | <b>Make-</b><i>Makefile Support</i> | http://manpages.ubuntu.com/manpages/cosmic/man1/make.1.html |
-| <b> gcc or clangd</b> | May use (<i>sudo apt-get install build-essentials</i>)|
+| <b> gcc or clangd</b> | May use (<i>sudo sudo apt install build-essential</i>)|
 </br>
 
 ### Running the Main Sha512 Algorithm (Requires a Input File)
@@ -31,14 +31,14 @@ Inside the <i>LabWork</i> folder there are files that run SHA-256 which were com
 
 ## SHA-512 Algorithm and it's Purpose
 
- The SHA-512 algorithm belongs to a family of other Secure Hash Standerds such as  SHA, SHA-1, SHA-2 and SHA-3 Each having it's own Block Size, Output Size and Internal State Sizes. SHA-512 being much more secure than the original SHA or algorithms in the SHA-0 or SHA-1 Categories as it's in the SHA-2 Category which is larger in hash message size and computing time, it is less influenced by Collision Based Attacks and Primeage Attacks. The fall back on using SHA-512 is its time to calculate a single hash so for programs that require many hashes calculated at the same time such as a web server dealing with 1000's of passwords per minute, it may not always be the most efficent or another example may be bitcoin where they opted for a SHA256 for the blocks within crypto.
+ The SHA-512 algorithm belongs to a family of other Secure Hash Standerds such as  SHA, SHA-1, SHA-2 and SHA-3 Each having it's own Block Size, Output Size and Internal State Sizes. SHA-512 being much more secure than the original SHA or algorithms in the SHA-0 or SHA-1 Categories as it's in the SHA-2 Category which is larger in hash message size and computing time, it is less influenced by Collision Based Attacks and Preimage Attacks. The fall back on using SHA-512 is its time to calculate a single hash so for programs that require many hashes calculated at the same time such as a web server dealing with 1000's of passwords per minute, it may not always be the most efficent or another example may be bitcoin where they opted for a SHA256 for the blocks within crypto.
 
  The purpose of these Secure Hash Algorithms in general is to generate digests of messages that are non reversible to ensure the integrity of a file since the digests were generated. Such as when you go to download a file online, you can compare the file you downloaded to the SHA Message Digest displayed on the webpage, using a local program and a character comparator. If the file you downloaded has a different hash to the original one displayed, it is highly likely the integrity of the file has been tampered with and would not be safe to run on your local machine as someone has probably infected it with a virus or intends to use it for mal practice such as stealing user information. SHA is not the only function family which deals in hashed message digests as there is also MD2 and MD5 but the decesion on which algorithm to use is mostly up to the developers usages and how often the hashing function will be called upon, which may require some expertise into Big-O Notation and Data Structures to ensure the most efficent algorithm is used while also being the most secure for the developers use case and computer hardware.
 
 ## Terms
 | Syntax | Description |
 | ----------- | ----------- |
-| <b>Primeage Attack</b> |  Using pre-computed tables of solutions are used in a brute-force manner in order to crack passwords. Requires a very powerful computational array of machines to crack.
+| <b>Preimage Attack</b> |  Using pre-computed tables of solutions are used in a brute-force manner in order to crack passwords. Requires a very powerful computational array of machines to crack.
 | <b>Collision Based Attack</b> | Non Sensical message produces the same hash as the original message. Computation Time is 2^n/2 where n is the Length of Message. This is why the larger Message Digests are harder to perform collision based attacks on as L the length would be much longer and require more computational power. |
 </br>
 
@@ -54,7 +54,7 @@ i.e
 But in the case of a Secure Hash Output, we do not know the inputs so this problem because increasingly harder.
 
     x + y = 50.
-In the above we cannot tell what two numbers make up **50** or if they are the original, we can take guesses such as **25+25** or **10+40** but if we are never told the original inputs we could never know.
+In the above we cannot tell what two numbers make up **50** or if they are the original, we can take guesses such as **25+25** or **10+40** but if we are never told the original inputs we could never know what numbers made up 50.
 So this adds 1 dimension of difficulty to reversing the Hash Message Digest alone.
 
 Next we need to consider a major key part in the hashing algorithm, in that a real hash function uses hundreds of one-way operations that take place sequentially while using previous operations resulting outputs in the later performed operations calculation, this can also be known as <b> Bit Dependency </b>. So when calculating hash output you are basically dealt with a  **all or nothing approach** where if even one bit is changed the whole output message could be vastly different.
@@ -80,7 +80,7 @@ Yes it would be possible to design a algorithm that does this, infact it is very
 
 *"If usable quantum computing were accessible, the field of cryptography would dramatically change, encryption codes could be broken quickly and perhaps crushing Blockchain technology."*
 
-This could be perhaps very true as a Quantum Machine does not work on the simple binary system that we have today, but on the idea of Qubits which has the ability of being both a 1 and a 0 at the same time for multiple iterations per Qubit. As of last year IBM promised a [1000 Qubit PC](https://www.sciencemag.org/news/2020/09/ibm-promises-1000-qubit-quantum-computer-milestone-2023) this would mean the pc could consecutively be 1000s of 1 and 0's at the same time and perform operations in a concurrent way and speed that pc's of today would never catch up with even in large pools like they are within bitcoin mining. 
+This could be perhaps very true as a Quantum Machine does not work on the simple binary system that we have today, but on the idea of Qubits which has the ability of being both a 1 and a 0 at the same time for multiple iterations per Qubit. As of last year IBM promised a [1000 Qubit PC](https://www.sciencemag.org/news/2020/09/ibm-promises-1000-qubit-quantum-computer-milestone-2023) this would mean the pc could consecutively be 1000s of 1 and 0's at the same time and perform operations in a concurrent way and speed that pc's of today would never catch up with even in large pools like they are within bitcoin mining but this is a long running debate and others feel that quantum computing will not break the mining ecosystem like Roger Huang who also is a poster for Forbes on he's post Titled "[Here’s Why Quantum Computing Will Not Break Cryptocurrencies](https://www.forbes.com/sites/rogerhuang/2020/12/21/heres-why-quantum-computing-will-not-break-cryptocurrencies/)"
 So if given a working quantum pc as stated above, it would be very possible to crack the different inputs required to create the same hash digest outputs within a person's lifetime for multiple types of SHA Hash Function but as of right now quantum computers are neither widely available or fully developed so based on current hardware, no single consumer based pc would be able to crack a SHA-2, or SHA-3 category Digest within a person’s life time.
 
 In terms of SHA-1, it has already been done through multiple methods and the idea of having a hashed output be the same with different inputs parallels with the idea of Collision Attacks and Collision within hashing in general. As users have had tried to brute force a SHA message to find its original inputs and even found algorithms to perform this successfuly such as cracking SHA-1 by using a [chosen-prefix collision](https://www.usenix.org/system/files/sec20-leurent.pdf) for it.
@@ -89,4 +89,43 @@ In terms of SHA-1, it has already been done through multiple methods and the ide
 ## 3. How difficult is it to find a hash digest beginning with at least twelve zeros?
 ---
 
-Considering that a hash digest is usually made up of Hexadecimal values, each string in the digest can range from anywhere between 0 and 15 (F in Hex). So you would have a 1/15^12 chance before we even consider the complexity of these algorithms and their non linearity as discussed above. A user would have a more likely hood to win their national lottery 10 times over than they would finding a hash digest to begin with 12 0's by inputting some file or text. This issue is also the prime difficulty within the Bit Coin Mining industry currently. The hash of a block within bitcoin needs to start with a certain number of zero values but the probability of calculating such a hash is very low therefore numerous attempts are made by thousands of users machines across the planet to generate new hashes and attempt to increment the nonce value such that they eventually can reach a valid hash and move onto the next major block. The issue with bitcoin mining is that as their target requires more nonce values or is "lower" the more exponentially difficult the task becomes and this is only the cracking of a SHA-256 algorithm not like the SHA-512 based algorithm built in this application. The current objective of bitcoin is to find the input for a 17 nonce value hash string but it has taken bitcoin over 10 years to get to this point with thousands of machines running day and generating millions of hashes to get this far. So the likely hood of you inputting something into a Secure Hash Algorithm and recieving back a Hash Digest with 12 leading 0's is impossibly possible as the chance of it happening is so low it might as well be impossible.
+Considering that a hash digest is usually made up of Hexadecimal values, each string in the digest can range from anywhere between 0 and 15 (F in Hex). So you would have a 1/15^12 chance before we even consider the complexity of these algorithms and their non linearity as discussed above. A user would have a more likely hood to win their national lottery 10 times over than they would finding a hash digest to begin with 12 0's by inputting some file or text. This issue is also the prime difficulty within the Bit Coin Mining industry currently. The hash of a block within bitcoin needs to start with a certain number of zero values but the probability of calculating such a hash is very low therefore numerous attempts are made by thousands of users machines across the planet to generate new hashes and attempt to increment the nonce value such that they eventually can reach a valid hash (Target) and move onto the next major block. The issue with bitcoin mining is that as their target requires more nonce values or is "lower" the more exponentially difficult the task becomes and this is only the cracking of a SHA-256 algorithm not like the SHA-512 based algorithm built in this application. The current objective of bitcoin is to find the input for a 17 nonce value hash string but it has taken bitcoin over 10 years to get to this point with thousands of machines running day and generating millions of hashes to get this far. So the likely hood of you inputting something into a Secure Hash Algorithm and receiving back a Hash Digest with 12 leading 0's is impossibly possible as the chance of it happening is so low it might as well be impossible.
+
+
+# Sources
+1. Secure Hash Standard by NIST - https://www.nist.gov/publications/secure-hash-standard
+
+2. Secure Hash Algorithms - https://en.wikipedia.org/wiki/Secure_Hash_Algorithms
+
+3. Build-Essential Package Debian - https://linuxize.com/post/how-to-install-gcc-on-ubuntu-20-04/
+
+4. GCC GNU Compiler - https://gcc.gnu.org/
+
+5. Clangd - https://clangd.llvm.org/
+
+6. GNU Make Files - https://www.gnu.org/software/make/manual/html_node/Introduction.html
+
+7. Make File Support - http://manpages.ubuntu.com/manpages/cosmic/man1/make.1.html
+
+8. Secure Hash Algorithms by Brilliant - https://brilliant.org/wiki/secure-hashing-algorithms/
+
+9. Hexadecimal Wikipedia - https://simple.wikipedia.org/wiki/Hexadecimal
+
+10. Collision Attack - https://en.wikipedia.org/wiki/Collision_attack
+ 
+11. Preimage Attack - https://en.wikipedia.org/wiki/Preimage_attack
+12. Pipeline Implementation of Secure Hash Algorithm (SHA-l)for  Cryptographic Application in Network Security - https://core.ac.uk/download/pdf/11786346.pdf
+
+13. Bitcoin - https://bitcoin.org/en/
+14. Bitcoin : A simple idea with complications - https://www.cybersecurityintelligence.com/blog/blockchain---a-simple-idea-with-complications--5073.html
+15. Bitcoin Nonce Definition by Investopedia - https://www.investopedia.com/terms/n/nonce.asp
+16. How Bitcoin Mining works by FreeCodeCamp - https://www.freecodecamp.org/news/how-bitcoin-mining-really-works-38563ec38c87/
+17. Stack Exchange Mining Difficulty and Leading Zeros - https://bitcoin.stackexchange.com/questions/85896/mining-difficulty-and-leading-zeros
+18. Quantum Computing by Wikipedia - https://en.wikipedia.org/wiki/Quantum_computing
+19. 1000 Qubit PC by IBM - https://www.sciencemag.org/news/2020/09/ibm-promises-1000-qubit-quantum-computer-milestone-2023
+20. Nella Ludlow - Forbes - https://www.forbes.com/sites/cognitiveworld/2019/02/24/why-quantum-computings-time-is-now/
+21. Roger Huang Forbes - https://www.forbes.com/sites/rogerhuang/2020/12/21/heres-why-quantum-computing-will-not-break-cryptocurrencies/
+
+22. SHA-1 is a Shambles: First Chosen-Prefix Collision on SHA-1 and Application to the PGP Web of Trust - https://www.usenix.org/system/files/sec20-leurent.pdf
+
+23. Target - The number you need to get below to mine a block by learnmeabitcoin.com https://learnmeabitcoin.com/technical/target
